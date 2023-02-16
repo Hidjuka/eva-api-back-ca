@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const characterRoutes = require('./routes/character');
 const playerRoutes = require('./routes/player');
 const adminRoutes = require('./routes/admin');
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
 
 mongoose.set("strictQuery", false);
 mongoose.connect('mongodb+srv://admin:admin@cluster0.ij0ogsd.mongodb.net/?retryWrites=true&w=majority',
@@ -26,5 +28,11 @@ app.use(express.json());
 app.use('/api/character', characterRoutes);
 app.use('/api/player', playerRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+);
 
 module.exports = app;

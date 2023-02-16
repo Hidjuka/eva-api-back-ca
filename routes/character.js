@@ -5,15 +5,15 @@ const router = express.Router();
 
 // POST
 // Ajoute un personnage avec un compte vierge
-router.post('/', auth, characterCtrl.createFirstCharacter);
+router.post('/createFisrtCharacter', auth, characterCtrl.createFirstCharacter);
 
 // POST
 // Ajoute un personnage
-router.post('/', auth, characterCtrl.createCharacter);
+router.post('/createCharacter', auth, characterCtrl.createCharacter);
 
 // GET
 // Affiche un personnage d'un joueur
-router.get('/', auth, characterCtrl.getOneCharacter);
+router.get('/getOneCharacter', auth, characterCtrl.getOneCharacter);
 
 // GET
 // Liste les personnages d'un joueur

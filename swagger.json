@@ -1,0 +1,188 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "3.0.0",
+        "title": "API REST",
+        "description": "Une API qui permet de gérer ses persos de WOW"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Entrez le token avec le préfixe 'Bearer:' e.g. : Bearer abcde12345...."
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/character/createCharacter": {
+            "post": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Créer un personnage",
+                "parameters": [
+                    {
+                        "name": "Character",
+                        "in": "body",
+                        "description": "Nouveau personnage à créer.",
+                        "schema": {
+                            "$ref": "#/definitions/NewCharacter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Personnage créer"
+                    },
+                    "400": {
+                        "description": "Erreur retournée par l'API"
+                    }
+                }
+            }
+        },
+        "/api/character/createFirstCharacter": {
+            "post": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Créer le premier personnage d'un compte",
+                "parameters": [
+                    {
+                        "name": "Character",
+                        "in": "body",
+                        "description": "Créer le premier personnage d'un compte à partir de ses identifiant et mot de passe.",
+                        "schema": {
+                            "$ref": "#/definitions/FirstCharacter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "idCompte + Personnage créer"
+                    },
+                    "400": {
+                        "description": "Erreur retournée par l'API"
+                    }
+                }
+            }
+        },
+        "/api/character/getOneCharacter": {
+            "post": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Récupère un personnage d'un compte",
+                "parameters": [
+                    {
+                        "name": "Character",
+                        "in": "body",
+                        "description": "Créer le premier personnage d'un compte à partir de ses identifiant et mot de passe.",
+                        "schema": {
+                            "$ref": "#/definitions/FirstCharacter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "idCompte + Personnage créer"
+                    },
+                    "400": {
+                        "description": "Erreur retournée par l'API"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "NewCharacter": {
+            "required": [
+                "pseudo",
+                "class",
+                "level",
+                "idCompte"
+            ],
+            "properties": {
+                "pseudo": {
+                    "type": "string"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "number"
+                },
+                "idCompte": {
+                    "type": "number"
+                }
+            }
+        },
+        "FirstCharacter": {
+            "required": [
+                "username",
+                "password",
+                "pseudo",
+                "class",
+                "level"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "pseudo": {
+                    "type": "string"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "number"
+                }
+            }
+        },
+        "Player": {
+            "required": [
+                "username",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "idCompte": {
+                    "type": "string"
+                }
+            }
+        },
+        "Admin": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
