@@ -1,6 +1,7 @@
 const Player = require("../models/Player");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const event = require('../events/connexionFail');
 
 // Connexion joueur
 exports.login = (req, res, next) => {
@@ -9,6 +10,7 @@ exports.login = (req, res, next) => {
         .then(player => {
 
             if (!player) {
+                event.emit('connexionFail');
                 return res.status(401).json({ message: "Login ou mot de passe incorrecte" });
             }
 
@@ -16,6 +18,7 @@ exports.login = (req, res, next) => {
                 .then(valid => {
 
                     if (!valid) {
+                        event.emit('connexionFail');
                         return res.status(401).json({ message: "Login ou mot de passe incorrecte" });
                     }
 

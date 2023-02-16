@@ -1,6 +1,7 @@
 const Admin = require("../models/Admin");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const event = require('../events/connexionFail');
 
 // Création compte admin
 exports.signup = (req, res, next) => {
@@ -30,6 +31,7 @@ exports.login = (req, res, next) => {
         .then(admin => {
 
             if (!admin) {
+                event.emit('connexionFail');
                 return res.status(401).json({ message: "Login ou mot de passe incorrecte" });
             }
 
@@ -37,6 +39,7 @@ exports.login = (req, res, next) => {
                 .then(valid => {
 
                     if (!valid) {
+                        event.emit('connexionFail');
                         return res.status(401).json({ message: "Login ou mot de passe incorrecte" });
                     }
 
