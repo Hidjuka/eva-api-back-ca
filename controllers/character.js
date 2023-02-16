@@ -42,7 +42,7 @@ exports.createCharacter = (req, res, next) => {
 
 // Affiche un personnage d'un joueur
 exports.getOneCharacter = (req, res, next) => {
-    Character.find({ idPlayer: req.auth.idPlayer })
+    Character.find({ idCompte: req.auth.idCompte })
         .then((characters) => {
             characters.findOne({ pseudo: req.params.pseudo, class: req.params.class })
                 .then(character => res.status(200).json(character))
@@ -52,7 +52,7 @@ exports.getOneCharacter = (req, res, next) => {
 
 // Liste les personnages d'un joueur
 exports.getCharacterByPlayer = (req, res, next) => {
-    Character.find({ idPlayer: req.auth.idPlayer })
+    Character.find({ idCompte: req.auth.idCompte })
         .then(characters => res.status(200).json(characters))
         .catch(error => res.status(400).json({ error }));
 }
@@ -60,7 +60,7 @@ exports.getCharacterByPlayer = (req, res, next) => {
 // Modifie un personnages d'un joueur
 exports.updateCharacter = (req, res, next) => {
 
-    Character.find({ idPlayer: req.auth.idPlayer })
+    Character.find({ idCompte: req.auth.idCompte })
         .then((characters) => {
             characters.findOne({ pseudo: req.params.pseudo, class: req.params.class })
                 .then((character) => {
@@ -74,7 +74,7 @@ exports.updateCharacter = (req, res, next) => {
 
 // Supprime un personnage d'un joueur
 exports.deleteCharacter = (req, res, next) => {
-    Character.find({ idPlayer: req.auth.idPlayer })
+    Character.find({ idCompte: req.auth.idCompte })
         .then((characters) => {
             characters.findOne({ pseudo: req.params.pseudo, class: req.params.class })
                 .then((character) => {
