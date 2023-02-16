@@ -4,6 +4,10 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 // POST
+// Ajoute un personnage avec un compte vierge
+router.post('/', auth, characterCtrl.createFirstCharacter);
+
+// POST
 // Ajoute un personnage
 router.post('/', auth, characterCtrl.createCharacter);
 

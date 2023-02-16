@@ -1,43 +1,54 @@
 const Character = require("../models/Character");
 const Player = require("../models/Player");
 const axios = require('axios');
+const availableClass = ['guerrier', 'paladin', 'chasseur', 'voleur', 'prêtre', 'chaman', 'mage', 'démoniste', 'moine', 'druide', 'chasseur de démons', 'chevalier de la mort', 'évocateur'];
+
+// Ajoute un personnage avec un compte vierge
+exports.createFirstCharacter = (req, res, next) => {
+
+    if (!checkClass(req.body.class)) {
+        return console.log('Classe inconnue');
+    }
+
+    axios.get('https://backend-tp-final-nodejs.agence-pixi.fr/wow/compte/check', {
+        params: {
+            username: req.body.username,
+            password: req.body.password
+        }
+    })
+        .then(function (response) {
+            let idCompte = response;
+            req.auth.idCompte = idCompte
+            console.log(idCompte)
+
+            const character = new Character({
+                pseudo: req.body.pseudo,
+                class: req.body.class,
+                level: req.body.level,
+                idCompte: idCompte
+            });
+            saveCharacter(character)
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 
 // Ajoute un personnage
 exports.createCharacter = (req, res, next) => {
 
-    if ( req.auth.idCompte == null )
-    {
-        axios.get('https://backend-tp-final-nodejs.agence-pixi.fr/wow/compte/check', {
-            params: {
-                username: req.body.username,
-                password: req.body.password
-            }
-          })
-          .then(function (response) {
-            idCompte = response;
-            req.auth.idCompte = idCompte
-          })
-          .catch(function (error) {
-            console.log(error);
-          });  
+    if (!checkClass(req.body.class)) {
+        return console.log('Classe inconnue');
     }
-    else
-    {
-        idCompte = req.body.idCompte
-    }
-    
+
     const character = new Character({
-        ...req.body,
-        idCompte: idCompte
+        pseudo: req.body.pseudo,
+        class: req.body.class,
+        level: req.body.level,
+        idCompte: req.body.idCompte
     });
 
-    character.save()
-        .then(() => {
-            res.status(201).json({ success: 'Personnage créer' })
-        })
-        .catch(error => {
-            res.status(400).json({ error })
-        })
+    saveCharacter(character)
 };
 
 // Affiche un personnage d'un joueur
@@ -85,5 +96,21 @@ exports.deleteCharacter = (req, res, next) => {
                 .catch((error) => {
                     res.status(400).json({ error });
                 });
+        })
+}
+
+function checkClass(classToCheck) {
+    if (!(availableClass.find(e => req.body.class))) {
+        return false;
+    }
+}
+
+function saveCharacter(character) {
+    character.save()
+        .then(() => {
+            res.status(201).json({ success: 'Personnage créer' })
+        })
+        .catch(error => {
+            res.status(400).json({ error })
         })
 }
