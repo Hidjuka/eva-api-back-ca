@@ -1,11 +1,34 @@
 const Character = require("../models/Character");
+const Player = require("../models/Player");
+const axios = require('axios');
 
 // Ajoute un personnage
 exports.createCharacter = (req, res, next) => {
 
+    if ( req.auth.idCompte == null )
+    {
+        axios.get('https://backend-tp-final-nodejs.agence-pixi.fr/wow/compte/check', {
+            params: {
+                username: req.body.username,
+                password: req.body.password
+            }
+          })
+          .then(function (response) {
+            idCompte = response;
+            req.auth.idCompte = idCompte
+          })
+          .catch(function (error) {
+            console.log(error);
+          });  
+    }
+    else
+    {
+        idCompte = req.body.idCompte
+    }
+    
     const character = new Character({
         ...req.body,
-        idPlayer: req.auth.idPlayer
+        idCompte: idCompte
     });
 
     character.save()
@@ -37,17 +60,11 @@ exports.getCharacterByPlayer = (req, res, next) => {
 // Modifie un personnages d'un joueur
 exports.updateCharacter = (req, res, next) => {
 
-    const characterObject = req.character ? {
-        ...JSON.parse(req.body.character)
-    } : { ...req.body };
-
-    delete characterObject._idPlayer;
-
     Character.find({ idPlayer: req.auth.idPlayer })
         .then((characters) => {
             characters.findOne({ pseudo: req.params.pseudo, class: req.params.class })
                 .then((character) => {
-                    character.updateOne({ pseudo: req.params.pseudo, class: req.params.class }, { ...characterObject, pseudo: req.params.pseudo, class: req.params.class })
+                    character.updateOne({ pseudo: req.params.pseudo, class: req.params.class })
                         .then(() => res.status(200).json({ success: 'Personnage modifé' }))
                         .catch(error => res.status(400).json({ error }))
                 })

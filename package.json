@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Hidjuka/eva-api-back-ca#readme",
   "dependencies": {
+    "axios": "^1.3.3",
     "bcrypt": "^5.1.0",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
