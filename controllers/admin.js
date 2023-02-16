@@ -16,7 +16,6 @@ exports.signup = (req, res, next) => {
             user.save()
                 .then(() => {
                     res.status(201).json({ message: "Utilisateur créé" })
-                    event.emit('sendMail', { email: user.email });
                 })
                 .catch(error => res.status(400).json({ error }));
 
