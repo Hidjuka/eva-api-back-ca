@@ -4,10 +4,10 @@ module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, 'SR1wKQYqlTLVWZSlYkot3xTu0qdZuWDn');
-        const idAdmin = decodedToken.idAdmin;
+        const idPlayer = decodedToken.idPlayer;
 
         req.auth = {
-            idAdmin: idAdmin
+            idPlayer: idPlayer
         };
 
         next();
